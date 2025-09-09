@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/model/task_list.dart';
-import 'package:todo_list/pages/tasklist_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class TaskListPage extends StatefulWidget {
+  final TaskList taskList;
+  const TaskListPage({super.key, required this.taskList});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<TaskListPage> createState() => _TaskListPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-
-  List<TaskList> allTodoLists = [
-    TaskList(listName: 'School'),
-    TaskList(listName: 'Workout'),
-    TaskList(listName: 'Landmarks'),
-  ];
+class _TaskListPageState extends State<TaskListPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -35,32 +29,31 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
 
         appBar: AppBar(
-          title: const Text('Todo List', 
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: Text(widget.taskList.listName,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
 
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: ListView.builder(
-              itemCount: allTodoLists.length,
+              itemCount: widget.taskList.tasks.length,
               itemBuilder: (context, index){
-                final taskLisk = allTodoLists[index];
-            
+                final task = widget.taskList.tasks[index];
+
                 return Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadiusGeometry.circular(15.0),
                   ),
                   color: const Color.fromARGB(255, 25, 19, 66),
-                  elevation: 0, 
+                  elevation: 0,
                   child: ListTile(
                     trailing: IconButton(
                       icon: Icon(
@@ -68,21 +61,15 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                       ),
                       onPressed: () {
-
+                        
                       },
                     ),
-                    title: Text(taskLisk.listName,
+                    title: Text(
+                      task.name,
                       style: TextStyle(
                         color: Colors.white,
                       ),
                     ),
-                    onTap: () {
-                      Navigator.push(context,
-                        MaterialPageRoute(
-                          builder: (context) => TaskListPage(taskList: allTodoLists[index])
-                        )
-                      );
-                    },
                   ),
                 );
               }
